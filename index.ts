@@ -52,6 +52,12 @@ export class SoftPromise<T = any> {
         return new SoftPromise(promise, options);
     }
 
+    static wrapWithTimeout<T> (promise: Promise<T> | SoftPromise<T>, timeout: number) {
+        return new SoftPromise(promise, {
+            timeout
+        });
+    }
+
     public unwrap () {
         return this._promise;
     }
