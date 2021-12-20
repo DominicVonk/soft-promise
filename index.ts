@@ -18,12 +18,13 @@ export class SoftPromise<T = any> {
      * @param {Options} options
      *
      * @example
+     * ```typescript
      * const promise = new SoftPromise((resolve, reject) => {
      *    setTimeout(() => {
      *       resolve("Hello");
      *   }, 1000);
      * });
-     *
+     * ```
      */
     constructor (promise: PromiseArg<T>, options?: Options) {
         this._promise = new Promise<T>((r, j) => {
@@ -78,6 +79,7 @@ export class SoftPromise<T = any> {
      * @returns {SoftPromise<T>}
      *
      * @example
+     * ```typescript
      * const promise = new Promise((resolve, reject) => {
      *   setTimeout(() => {
      *    resolve("Hello");
@@ -85,6 +87,7 @@ export class SoftPromise<T = any> {
      * });
      *
      * SoftPromise.wrap(promise);
+     * ```
      */
     public static wrap<T> (promise: Promise<T> | SoftPromise<T>, options?: Options) {
         return new SoftPromise<T>(promise, options);
@@ -98,6 +101,7 @@ export class SoftPromise<T = any> {
      * @returns {SoftPromise<T>}
      *
      * @example
+     * ```typescript
      * const promise = new Promise((resolve, reject) => {
      *  setTimeout(() => {
      *   resolve("Hello");
@@ -105,6 +109,7 @@ export class SoftPromise<T = any> {
      * });
      *
      * SoftPromise.wrapWithTimeout(promise, 500);
+     * ```
      */
     public static wrapWithTimeout<T> (promise: Promise<T> | SoftPromise<T>, timeout: number) {
         return new SoftPromise<T>(promise, {
@@ -137,7 +142,9 @@ export class SoftPromise<T = any> {
      * @returns {void}
      *
      * @example
+     * ```typescript
      * promise.escape("Reason to escape");
+     * ```
      */
     public escape (reason?: any) {
         this._escape(reason);
@@ -166,6 +173,7 @@ export class SoftPromise<T = any> {
  * @returns {SoftPromise<T>}
  *
  * @example
+ * ```typescript
  * const promise = new Promise((resolve, reject) => {
  *  setTimeout(() => {
  *    resolve("Hello");
@@ -173,6 +181,7 @@ export class SoftPromise<T = any> {
  * });
  *
  * softenPromise(promise);
+ * ```
  */
 export function softenPromise<T> (promise: PromiseParam<T>, options?: Options) {
     return SoftPromise.wrap(promise, options);
@@ -187,12 +196,14 @@ export function softenPromise<T> (promise: PromiseParam<T>, options?: Options) {
  * @returns  {SoftPromise<T>}
  *
  * @example
+ * ```typescript
  * const promise = new Promise((resolve, reject) => {
  *  setTimeout(() => {
  *    resolve("Hello");
  *  }, 1000);
  * });
  * softenPromiseWithTimeout(promise, 500);
+ * ```
  */
 export function softenPromiseWithTimeout<T> (promise: PromiseParam<T>, timeout: number, options?: Options) {
     return softenPromise(promise, {
@@ -208,13 +219,14 @@ export function softenPromiseWithTimeout<T> (promise: PromiseParam<T>, timeout: 
  * @returns {BoxedPromise<T>}
  *
  * @example
+ * ```typescript
  * const promise = new Promise((resolve, reject) => {
  *  setTimeout(() => {
  *   resolve("Hello");
  *  }, 1000);
  * });
  * let [result,error] = boxPromise(promise);
- *
+ * ```
  */
 export async function boxPromise<T> (promise: PromiseParam<T>): BoxedPromise<T> {
     try {
