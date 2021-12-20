@@ -12,12 +12,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: taichi/actions-package-update@v0.5.0
       - uses: actions/setup-node@v2
         with:
           node-version: 16
           registry-url: https://registry.npmjs.org/
       - run: npm ci
       - run: npm run build
+      - run: npm run docs
       - run: npm publish --public
         env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}   
+      - name: GitHub Commit & Push
+        uses: actions-js/push@v1.3
+        with:
+          github_token:  ${{ secrets.GITHUB_TOKEN }}
