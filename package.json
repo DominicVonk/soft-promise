@@ -1,17 +1,34 @@
 {
   "name": "soft-promise",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "The escapeable promise",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "module": "dist/esm/index.js",
+  "keywords": [
+    "soft promise",
+    "soft",
+    "promise",
+    "cancelable",
+    "escapable"
+  ],
   "scripts": {
     "test": "ts-node test/test.ts",
-    "build": "tsc"
+    "build": "tsc -p tsconfig.json && tsc -p tsconfig.mod.json"
   },
   "author": "Dominic Vonk",
   "license": "ISC",
   "devDependencies": {
     "ts-node": "^10.4.0",
     "typescript": "^4.5.4"
+  },
+  "exports": {
+    "require": "./dist/index.js",
+    "import": "./dist/esm/index.js",
+    "default": "./dist/esm/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DominicVonk/soft-promise"
   }
 }
