@@ -62,6 +62,10 @@ export class SoftPromise<T = any> {
         return this._promise;
     }
 
+    public box (): Promise<[T | null, any]> {
+        return boxPromise(this._promise)
+    }
+
     public escape (reason?: any) {
         this._escape(reason);
     }
@@ -90,6 +94,14 @@ export function softenPromiseWithTimeout<T> (promise: Promise<T> | SoftPromise<T
         ...options,
         timeout
     });
+}
+
+export async function boxPromise<T> (promise: Promise<T> | SoftPromise<T>): Promise<[T | null, any]> {
+    try {
+        return [await promise, null];
+    } catch (error) {
+        return [null, error];
+    }
 }
 
 export default SoftPromise;

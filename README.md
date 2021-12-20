@@ -72,14 +72,9 @@ const promise = new Promise((resolve, reject) => {
   }, 1000);
 });
 
-const softPromise = softenPromiseWithTimeout(promise, 500); // SoftPromise.wrapWithTimeout
-
+const softPromise = softenPromiseWithTimeout(promise, 500); // SoftPromise.wrapWithTimeout(promise, 500)
 (async () => {
-  try {
-    const result = await softPromise;
-    console.log(result);
-  } catch (error) {
-    console.log(error);
-  }
+  const [result, error] = await softPromise.box();
+  console.log({ result, error });
 })();
 ```

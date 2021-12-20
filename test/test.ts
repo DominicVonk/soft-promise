@@ -1,4 +1,4 @@
-import { SoftPromise, softenPromise, softenPromiseWithTimeout } from './../index';
+import { SoftPromise, softenPromise, softenPromiseWithTimeout, boxPromise } from './../index';
 const promise = new SoftPromise((resolve, reject) => {
     setTimeout(() => {
         resolve("Hello");
@@ -26,7 +26,7 @@ const realPromise2 = new Promise((resolve, reject) => {
     }, 1000);
 });
 
-const softenPromiseTimeout = softenPromiseWithTimeout(realPromise2, 1500);
+const softenPromiseTimeout = softenPromiseWithTimeout(realPromise2, 500);
 
 (async () => {
     try {
@@ -47,10 +47,6 @@ const softenPromiseTimeout = softenPromiseWithTimeout(realPromise2, 1500);
 })();
 
 (async () => {
-    try {
-        const result = await softenPromiseTimeout;
-        console.log(result);
-    } catch (error) {
-        console.log(error);
-    }
+    const [result, error] = await softenPromiseTimeout.box();
+    console.log({ result, error });
 })();
