@@ -18,7 +18,8 @@
     "docs": "jsdoc -c jsdoc.json index.ts"
   },
   "author": "Dominic Vonk",
-  "license": "ISC",
+  "license": "MIT",
+  "homepage": "https://dominicvonk.github.io/soft-promise",
   "devDependencies": {
     "better-docs": "^2.3.2",
     "jsdoc": "^3.6.7",
