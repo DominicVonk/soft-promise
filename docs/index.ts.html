@@ -1,0 +1,343 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> index.ts</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    API Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="SoftPromise_SoftPromise.html">SoftPromise</a></li></ul><h3>Global</h3><ul><li><a href="global.html#boxPromise">boxPromise</a></li><li><a href="global.html#softenPromise">softenPromise</a></li><li><a href="global.html#softenPromiseWithTimeout">softenPromiseWithTimeout</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>index.ts</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>interface Options {
+    timeout?: number;
+}
+
+type PromiseArg&lt;T> =
+    ((resolve: (value: T | PromiseLike&lt;T>) => void, reject: (reason?: any) => void) => void) | PromiseParam&lt;T>;
+
+type PromiseParam&lt;T> = Promise&lt;T> | SoftPromise&lt;T>;
+
+type BoxedPromise&lt;T> = Promise&lt;[T | null, any]>;
+export class SoftPromise&lt;T = any> {
+    private _promise: Promise&lt;T>;
+    private _escape: (reason?: any) => void = (reason?: any) => { };
+    private _done = false;
+
+    /**
+     * @param {PromiseArg&lt;T>} promiseOrValue
+     * @param {Options} options
+     * @constructor
+     *
+     * @example
+     * const promise = new SoftPromise((resolve, reject) => {
+     *    setTimeout(() => {
+     *       resolve("Hello");
+     *   }, 1000);
+     * });
+     *
+     */
+    constructor (promise: PromiseArg&lt;T>, options?: Options) {
+        this._promise = new Promise&lt;T>((r, j) => {
+            this._escape = (reason?: any) => {
+                if (!this._done) {
+                    this._done = true;
+                    j(reason);
+
+                }
+            }
+            if (promise instanceof Promise || promise instanceof SoftPromise) {
+                promise.then((value: T | PromiseLike&lt;T>) => {
+                    if (!this._done) {
+                        this._done = true;
+                        r(value);
+                    }
+                }, (reason?: any) => {
+                    if (!this._done) {
+                        this._done = true;
+                        j(reason);
+                    }
+                });
+            } else {
+                promise((value: T | PromiseLike&lt;T>) => {
+                    if (!this._done) {
+                        this._done = true;
+                        r(value);
+                    }
+                }, (reason?: any) => {
+                    if (!this._done) {
+                        this._done = true;
+                        j(reason);
+                    }
+                });
+            }
+        });
+
+        if (options?.timeout &amp;&amp; typeof options.timeout === 'number' &amp;&amp; options.timeout > 0) {
+            setTimeout(() => {
+                this.escape('Timeout');
+            }, options.timeout);
+        }
+
+    }
+
+    /**
+     *
+     * Wrap a promise in a SoftPromise
+     *
+     * @param {PromiseParam&lt;T>} promise
+     * @param {Options} options
+     * @returns {SoftPromise&lt;T>}
+     *
+     * @example
+     * const promise = new Promise((resolve, reject) => {
+     *   setTimeout(() => {
+     *    resolve("Hello");
+     *  }, 1000);
+     * });
+     *
+     * SoftPromise.wrap(promise);
+     */
+    static wrap&lt;T> (promise: Promise&lt;T> | SoftPromise&lt;T>, options?: Options) {
+        return new SoftPromise&lt;T>(promise, options);
+    }
+
+    /**
+     * Wrap promise with timeout
+     *
+     * @param {PromiseParam&lt;T>} promise
+     * @param {number} timeout
+     * @returns {SoftPromise&lt;T>}
+     *
+     * @example
+     * const promise = new Promise((resolve, reject) => {
+     *  setTimeout(() => {
+     *   resolve("Hello");
+     *  }, 1000);
+     * });
+     *
+     * SoftPromise.wrapWithTimeout(promise, 500);
+     */
+    static wrapWithTimeout&lt;T> (promise: Promise&lt;T> | SoftPromise&lt;T>, timeout: number) {
+        return new SoftPromise&lt;T>(promise, {
+            timeout
+        });
+    }
+
+    /**
+     * Unwrap promise
+     *
+     * @returns Promise&lt;T>
+     */
+    public unwrap () {
+        return this._promise;
+    }
+
+    /**
+     * Returns a boxed promise (exceptions caught in second value of array)
+     *
+     * @returns {BoxedPromise&lt;T>}
+     */
+    public box (): Promise&lt;[T | null, any]> {
+        return boxPromise(this._promise)
+    }
+
+    /**
+     * Escape promise
+     *
+     * @param {any} reason
+     * @returns {void}
+     *
+     * @example
+     * promise.escape("Reason to escape");
+     */
+    public escape (reason?: any) {
+        this._escape(reason);
+    }
+
+    public then&lt;TResult1 = T, TResult2 = never> (onfulfilled?: ((value: T) => TResult1 | PromiseLike&lt;TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike&lt;TResult2>) | undefined | null): Promise&lt;TResult1 | TResult2> {
+        return this._promise.then(onfulfilled, onrejected);
+    }
+
+    public catch&lt;TResult = never> (onrejected?: ((reason: any) => TResult | PromiseLike&lt;TResult>) | undefined | null): Promise&lt;T | TResult> {
+        return this._promise.catch(onrejected);
+    }
+
+    public finally (onfinally?: (() => void) | undefined | null): Promise&lt;T> {
+        return this._promise.finally(onfinally);
+    }
+
+    public [Symbol.toStringTag] = 'SoftPromise';
+}
+
+/**
+ * Soften promise
+ *
+ * @param {PromiseParam&lt;T>} promise
+ * @param options
+ * @returns {SoftPromise&lt;T>}
+ *
+ * @example
+ * const promise = new Promise((resolve, reject) => {
+ *  setTimeout(() => {
+ *    resolve("Hello");
+ *  }, 1000);
+ * });
+ *
+ * softenPromise(promise);
+ */
+export function softenPromise&lt;T> (promise: PromiseParam&lt;T>, options?: Options) {
+    return SoftPromise.wrap(promise, options);
+}
+
+/**
+ * Soften promise with timeout
+ *
+ * @param {PromiseParam&lt;T>} promise
+ * @param {number} timeout
+ * @param {Options} options
+ * @returns  {SoftPromise&lt;T>}
+ *
+ * @example
+ * const promise = new Promise((resolve, reject) => {
+ *  setTimeout(() => {
+ *    resolve("Hello");
+ *  }, 1000);
+ * });
+ * softenPromiseWithTimeout(promise, 500);
+ */
+export function softenPromiseWithTimeout&lt;T> (promise: PromiseParam&lt;T>, timeout: number, options?: Options) {
+    return softenPromise(promise, {
+        ...options,
+        timeout
+    });
+}
+
+/**
+ * Box results of a promise
+ *
+ * @param {PromiseParam&lt;T>} promise
+ * @returns {BoxedPromise&lt;T>}
+ *
+ * @example
+ * const promise = new Promise((resolve, reject) => {
+ *  setTimeout(() => {
+ *   resolve("Hello");
+ *  }, 1000);
+ * });
+ * let [result,error] = boxPromise(promise);
+ *
+ */
+export async function boxPromise&lt;T> (promise: PromiseParam&lt;T>): BoxedPromise&lt;T> {
+    try {
+        return [await promise, null];
+    } catch (error) {
+        return [null, error];
+    }
+}
+
+export default SoftPromise;</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+</body>
+</html>
