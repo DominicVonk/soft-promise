@@ -6,19 +6,19 @@ export class SoftPromise<T = any> {
         this._promise = new Promise<T>((r, j) => {
             this._escape = (reason?: any) => {
                 if (!this._done) {
-                    // this._done = true;
+                    this._done = true;
                     j(reason);
 
                 }
             }
             promise((value: T | PromiseLike<T>) => {
                 if (!this._done) {
-                    //this._done = true;
+                    this._done = true;
                     r(value);
                 }
             }, (reason?: any) => {
                 if (!this._done) {
-                    // this._done = true;
+                    this._done = true;
                     j(reason);
                 }
             });
