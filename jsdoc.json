@@ -1,0 +1,13 @@
+{
+    "opts": {
+        "template": "node_modules/better-docs",
+        "destination": "./docs/"
+    },
+    "plugins": [
+        "node_modules/better-docs/typescript"
+    ],
+    "source": {
+        "includePattern": "\\.(ts|tsx)$"
+    },
+    "directory": "docs"
+}
