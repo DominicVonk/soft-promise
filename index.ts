@@ -79,5 +79,11 @@ export function softenPromise<T> (promise: Promise<T> | SoftPromise<T>, options?
     return SoftPromise.wrap(promise, options);
 }
 
+export function softenPromiseWithTimeout<T> (promise: Promise<T> | SoftPromise<T>, timeout: number, options?: Options) {
+    return softenPromise(promise, {
+        ...options,
+        timeout
+    });
+}
 
 export default SoftPromise;
