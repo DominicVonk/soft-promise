@@ -45,3 +45,5 @@ export class SoftPromise<T = any> {
 
     public [Symbol.toStringTag] = 'SoftPromise';
 }
+
+export default SoftPromise;
