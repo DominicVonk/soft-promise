@@ -1,128 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html class="default"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>soft-promise</title><meta name="description" content="Documentation for soft-promise"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><script>document.body.classList.add(localStorage.getItem("tsd-theme") || "os")</script><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">soft-promise</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label><input type="checkbox" id="tsd-filter-externals" checked/><label class="tsd-widget" for="tsd-filter-externals">Externals</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><h1>soft-promise</h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><div class="tsd-panel tsd-typography">
+<a href="#soft-promise" id="soft-promise" style="color: inherit; text-decoration: none;">
+  <h1>Soft Promise</h1>
+</a>
+<p>The escapeable promise</p>
+<blockquote>
+<p>Sometimes you don&#39;t want to be forced to wait for a promise to resolve.</p>
+</blockquote>
+<p>With this library you can use a soft promise to escape the promise if it hasn&#39;t
+resolved yet.</p>
 
-<head>
-  
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Home</title>
+<a href="#examples" id="examples" style="color: inherit; text-decoration: none;">
+  <h2>Examples</h2>
+</a>
 
-  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script src="./build/entry.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
-  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
-  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
-  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
-  <link type="text/css" rel="stylesheet" href="">
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
+<a href="#example-1" id="example-1" style="color: inherit; text-decoration: none;">
+  <h3>Example 1</h3>
+</a>
+<pre><code class="language-js"><span class="hl-0">const</span><span class="hl-1"> { </span><span class="hl-2">SoftPromise</span><span class="hl-1"> } = </span><span class="hl-3">require</span><span class="hl-1">(</span><span class="hl-4">&quot;soft-promise&quot;</span><span class="hl-1">);</span><br/><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">promise</span><span class="hl-1"> = </span><span class="hl-0">new</span><span class="hl-1"> </span><span class="hl-3">SoftPromise</span><span class="hl-1">((</span><span class="hl-5">resolve</span><span class="hl-1">, </span><span class="hl-5">reject</span><span class="hl-1">) </span><span class="hl-0">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-3">setTimeout</span><span class="hl-1">(() </span><span class="hl-0">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-3">resolve</span><span class="hl-1">(</span><span class="hl-4">&quot;Hello&quot;</span><span class="hl-1">);</span><br/><span class="hl-1">  }, </span><span class="hl-6">1000</span><span class="hl-1">);</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-3">setTimeout</span><span class="hl-1">(() </span><span class="hl-0">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-5">promise</span><span class="hl-1">.</span><span class="hl-3">escape</span><span class="hl-1">(</span><span class="hl-4">&quot;Reason to escape&quot;</span><span class="hl-1">);</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-1">(</span><span class="hl-0">async</span><span class="hl-1"> () </span><span class="hl-0">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-7">try</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">result</span><span class="hl-1"> = </span><span class="hl-7">await</span><span class="hl-1"> </span><span class="hl-5">promise</span><span class="hl-1">;</span><br/><span class="hl-1">    </span><span class="hl-5">console</span><span class="hl-1">.</span><span class="hl-3">log</span><span class="hl-1">(</span><span class="hl-5">result</span><span class="hl-1">);</span><br/><span class="hl-1">  } </span><span class="hl-7">catch</span><span class="hl-1"> (</span><span class="hl-5">error</span><span class="hl-1">) {</span><br/><span class="hl-1">    </span><span class="hl-5">console</span><span class="hl-1">.</span><span class="hl-3">log</span><span class="hl-1">(</span><span class="hl-5">error</span><span class="hl-1">);</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">})();</span>
+</code></pre>
 
-  
-</head>
+<a href="#example-2" id="example-2" style="color: inherit; text-decoration: none;">
+  <h3>Example 2</h3>
+</a>
+<pre><code class="language-js"><span class="hl-0">const</span><span class="hl-1"> { </span><span class="hl-2">softenPromise</span><span class="hl-1"> } = </span><span class="hl-3">require</span><span class="hl-1">(</span><span class="hl-4">&quot;soft-promise&quot;</span><span class="hl-1">);</span><br/><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">promise</span><span class="hl-1"> = </span><span class="hl-0">new</span><span class="hl-1"> </span><span class="hl-8">Promise</span><span class="hl-1">((</span><span class="hl-5">resolve</span><span class="hl-1">, </span><span class="hl-5">reject</span><span class="hl-1">) </span><span class="hl-0">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-3">setTimeout</span><span class="hl-1">(() </span><span class="hl-0">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-3">resolve</span><span class="hl-1">(</span><span class="hl-4">&quot;Hello&quot;</span><span class="hl-1">);</span><br/><span class="hl-1">  }, </span><span class="hl-6">1000</span><span class="hl-1">);</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">softPromise</span><span class="hl-1"> = </span><span class="hl-3">softenPromise</span><span class="hl-1">(</span><span class="hl-5">promise</span><span class="hl-1">); </span><span class="hl-9">// SoftPromise.wrap(promise)</span><br/><br/><span class="hl-3">setTimeout</span><span class="hl-1">(() </span><span class="hl-0">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-5">softPromise</span><span class="hl-1">.</span><span class="hl-3">escape</span><span class="hl-1">(</span><span class="hl-4">&quot;Reason to escape&quot;</span><span class="hl-1">);</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-1">(</span><span class="hl-0">async</span><span class="hl-1"> () </span><span class="hl-0">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-7">try</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">result</span><span class="hl-1"> = </span><span class="hl-7">await</span><span class="hl-1"> </span><span class="hl-5">softPromise</span><span class="hl-1">;</span><br/><span class="hl-1">    </span><span class="hl-5">console</span><span class="hl-1">.</span><span class="hl-3">log</span><span class="hl-1">(</span><span class="hl-5">result</span><span class="hl-1">);</span><br/><span class="hl-1">  } </span><span class="hl-7">catch</span><span class="hl-1"> (</span><span class="hl-5">error</span><span class="hl-1">) {</span><br/><span class="hl-1">    </span><span class="hl-5">console</span><span class="hl-1">.</span><span class="hl-3">log</span><span class="hl-1">(</span><span class="hl-5">error</span><span class="hl-1">);</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">})();</span>
+</code></pre>
 
-
-
-<body class="layout small-header">
-    <div id="stickyNavbarOverlay"></div>
-    
-
-<div class="top-nav">
-    <div class="inner">
-        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-        </a>
-        <div class="logo">
-            
-            
-        </div>
-        <div class="menu">
-            
-            <div class="navigation">
-                <a
-                    href="index.html"
-                    class="link"
-                >
-                    API Documentation
-                </a>
-                
-                
-                
-            </div>
-        </div>
-    </div>
-</div>
-    <div id="main">
-        <div
-            class="sidebar "
-            id="sidebarNav"
-        >
-            
-            <nav>
-                
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Classes</h3><ul><li><a href="SoftPromise_SoftPromise.html">SoftPromise</a></li></ul><h3>Global</h3><ul><li><a href="global.html#boxPromise">boxPromise</a></li><li><a href="global.html#softenPromise">softenPromise</a></li><li><a href="global.html#softenPromiseWithTimeout">softenPromiseWithTimeout</a></li></ul></div>
-                
-            </nav>
-        </div>
-        <div class="core" id="main-content-wrapper">
-            <div class="content">
-                <header class="page-title">
-                    <p></p>
-                    <h1>Home</h1>
-                </header>
-                
-
-
-
-    
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-            </div>
-            
-            <footer class="footer">
-                <div class="content has-text-centered">
-                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a></p>
-                    <p class="sidebar-created-by">
-                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
-                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
-                    </p>
-                </div>
-            </footer>
-            
-        </div>
-        <div id="side-nav" class="side-nav">
-        </div>
-    </div>
-<script src="scripts/app.min.js"></script>
-<script>PR.prettyPrint();</script>
-<script src="scripts/linenumber.js"> </script>
-
-</body>
-</html>
+<a href="#example-3" id="example-3" style="color: inherit; text-decoration: none;">
+  <h3>Example 3</h3>
+</a>
+<pre><code class="language-js"><span class="hl-0">const</span><span class="hl-1"> { </span><span class="hl-2">softenPromiseWithTimeout</span><span class="hl-1"> } = </span><span class="hl-3">require</span><span class="hl-1">(</span><span class="hl-4">&quot;soft-promise&quot;</span><span class="hl-1">);</span><br/><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">promise</span><span class="hl-1"> = </span><span class="hl-0">new</span><span class="hl-1"> </span><span class="hl-8">Promise</span><span class="hl-1">((</span><span class="hl-5">resolve</span><span class="hl-1">, </span><span class="hl-5">reject</span><span class="hl-1">) </span><span class="hl-0">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-3">setTimeout</span><span class="hl-1">(() </span><span class="hl-0">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-3">resolve</span><span class="hl-1">(</span><span class="hl-4">&quot;Hello&quot;</span><span class="hl-1">);</span><br/><span class="hl-1">  }, </span><span class="hl-6">1000</span><span class="hl-1">);</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-0">const</span><span class="hl-1"> </span><span class="hl-2">softPromise</span><span class="hl-1"> = </span><span class="hl-3">softenPromiseWithTimeout</span><span class="hl-1">(</span><span class="hl-5">promise</span><span class="hl-1">, </span><span class="hl-6">500</span><span class="hl-1">); </span><span class="hl-9">// SoftPromise.wrapWithTimeout(promise, 500)</span><br/><span class="hl-1">(</span><span class="hl-0">async</span><span class="hl-1"> () </span><span class="hl-0">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-0">const</span><span class="hl-1"> [</span><span class="hl-2">result</span><span class="hl-1">, </span><span class="hl-2">error</span><span class="hl-1">] = </span><span class="hl-7">await</span><span class="hl-1"> </span><span class="hl-5">softPromise</span><span class="hl-1">.</span><span class="hl-3">box</span><span class="hl-1">();</span><br/><span class="hl-1">  </span><span class="hl-5">console</span><span class="hl-1">.</span><span class="hl-3">log</span><span class="hl-1">({ </span><span class="hl-5">result</span><span class="hl-1">, </span><span class="hl-5">error</span><span class="hl-1"> });</span><br/><span class="hl-1">})();</span>
+</code></pre>
+</div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class="current"><a href="modules.html">Exports</a></li></ul></nav><nav class="tsd-navigation secondary menu-sticky"><ul><li class="tsd-kind-reference"><a href="modules.html#default" class="tsd-kind-icon">default</a></li><li class="tsd-kind-class tsd-has-type-parameter"><a href="classes/SoftPromise.html" class="tsd-kind-icon">Soft<wbr/>Promise</a></li><li class="tsd-kind-interface"><a href="interfaces/Options.html" class="tsd-kind-icon">Options</a></li><li class="tsd-kind-type-alias tsd-has-type-parameter"><a href="modules.html#BoxedPromise" class="tsd-kind-icon">Boxed<wbr/>Promise</a></li><li class="tsd-kind-type-alias tsd-has-type-parameter"><a href="modules.html#PromiseArg" class="tsd-kind-icon">Promise<wbr/>Arg</a></li><li class="tsd-kind-type-alias tsd-has-type-parameter"><a href="modules.html#PromiseParam" class="tsd-kind-icon">Promise<wbr/>Param</a></li><li class="tsd-kind-function tsd-has-type-parameter"><a href="modules.html#boxPromise" class="tsd-kind-icon">box<wbr/>Promise</a></li><li class="tsd-kind-function tsd-has-type-parameter"><a href="modules.html#softenPromise" class="tsd-kind-icon">soften<wbr/>Promise</a></li><li class="tsd-kind-function tsd-has-type-parameter"><a href="modules.html#softenPromiseWithTimeout" class="tsd-kind-icon">soften<wbr/>Promise<wbr/>With<wbr/>Timeout</a></li></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Legend</h2><div class="tsd-legend-group"><ul class="tsd-legend"><li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li><li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li></ul></div><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div><script src="assets/main.js"></script></body></html>
